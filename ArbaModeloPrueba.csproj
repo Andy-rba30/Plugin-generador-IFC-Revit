@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    ARBA Modelo de prueba: add-in de Revit 2027 que genera, en el proyecto abierto, un modelo con elementos
+    NATIVOS (columnas, vigas, zapatas, muros, losas, terreno, vistas) para probar los add-ins de la suite ARBA.
+
+    Compilar: dotnet build -c Release
+    Revit 2027 corre sobre .NET 10. EnableWindowsTargeting permite compilar (solo para comprobar) fuera de Windows.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>ArbaModeloPrueba</AssemblyName>
+    <RootNamespace>ArbaModeloPrueba</RootNamespace>
+    <Version>0.1.0</Version>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <RevitVersion>2027</RevitVersion>
+  </PropertyGroup>
+
+  <!-- Código común ARBA (submódulo external/ARBA-comun): pestaña ARBA, tema oscuro. Se compila dentro de este
+       ensamblado, nunca como DLL compartida. -->
+  <ItemGroup>
+    <Compile Remove="external\**" />
+    <None Remove="external\**" />
+  </ItemGroup>
+  <Import Project="external/ARBA-comun/Arba.Comun.props" />
+
+  <ItemGroup>
+    <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="2027.*" ExcludeAssets="runtime" />
+    <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="2027.*" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ArbaModeloPrueba.addin" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!-- En Debug y en Windows copia el add-in a la carpeta de Revit 2027 del usuario. -->
+  <Target Name="CopyToRevit" AfterTargets="Build" Condition="'$(Configuration)'=='Debug' And '$(OS)'=='Windows_NT' And '$(DeployToRevit)'!='false'">
+    <PropertyGroup>
+      <AddinsDir>$(AppData)\Autodesk\Revit\Addins\2027\</AddinsDir>
+    </PropertyGroup>
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(AddinsDir)ArbaModeloPrueba\" ContinueOnError="true" />
+    <Copy SourceFiles="$(ProjectDir)ArbaModeloPrueba.addin" DestinationFolder="$(AddinsDir)" ContinueOnError="true" />
+  </Target>
+
+</Project>

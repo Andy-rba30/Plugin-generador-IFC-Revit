@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>ARBA Modelo de prueba</Name>
+    <Assembly>ArbaModeloPrueba\ArbaModeloPrueba.dll</Assembly>
+    <FullClassName>ArbaModeloPrueba.App</FullClassName>
+    <ClientId>2f45b62c-5d53-405b-ac20-2cd766011321</ClientId>
+    <VendorId>LOCAL</VendorId>
+    <VendorDescription>Uso interno</VendorDescription>
+  </AddIn>
+  <AddIn Type="Command">
+    <Name>Generar modelo de prueba ARBA</Name>
+    <Text>Generar modelo de prueba ARBA</Text>
+    <Description>Crea en el proyecto abierto un modelo con elementos nativos de Revit para probar todos los add-ins ARBA.</Description>
+    <Assembly>ArbaModeloPrueba\ArbaModeloPrueba.dll</Assembly>
+    <FullClassName>ArbaModeloPrueba.GenerarModeloCommand</FullClassName>
+    <ClientId>be4da78e-753d-4f47-94d5-9bb9986aa778</ClientId>
+    <VendorId>LOCAL</VendorId>
+    <VendorDescription>Uso interno</VendorDescription>
+    <VisibilityMode>NotVisibleInFamily</VisibilityMode>
+  </AddIn>
+</RevitAddIns>
